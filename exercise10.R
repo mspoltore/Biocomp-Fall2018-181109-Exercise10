@@ -66,9 +66,9 @@ speciesModel = function(t, y, p){
 # a21<a22
 
 # Case 1
-y0=c(0.1,0.1)
+y0=c(2,2)
 Times=1:100
-params1=c(0.5,1,0.5,0.5,2,0.5)
+params1=c(0.5,0.0095,0.002,0.5,0.0085,0.0001)
 #params=(R1,a11,a12,R2,a22,a21)
 sim1=ode(y=y0,times=Times,func=speciesModel,parms=params1)
 out1=data.frame(time=sim1[,1],pop1=sim1[,2],pop2=sim1[,3])
@@ -76,6 +76,25 @@ out1=melt(out1,id.vars = "time")
 ggplot(data=out1, aes(x=time,y=value))+geom_line(aes(color=variable))
 
 # Case 2
+y0=c(2,2)
+Times=1:100
+params2=c(0.5,0.007,0.0001,0.5,0.008,0.0002)
+#params=(R1,a11,a12,R2,a22,a21)
+sim2=ode(y=y0,times=Times,func=speciesModel,parms=params2)
+out2=data.frame(time=sim2[,1],pop1=sim2[,2],pop2=sim2[,3])
+out2=melt(out2,id.vars = "time")
+ggplot(data=out2, aes(x=time,y=value))+geom_line(aes(color=variable))
+
+# Case 3
+y0=c(2,2)
+Times=1:100
+params3=c(0.5,0.009,0.004,0.5,0.009,0.003)
+#params=(R1,a11,a12,R2,a22,a21)
+sim3=ode(y=y0,times=Times,func=speciesModel,parms=params3)
+out3=data.frame(time=sim3[,1],pop1=sim3[,2],pop2=sim3[,3])
+out3=melt(out3,id.vars = "time")
+ggplot(data=out3, aes(x=time,y=value))+geom_line(aes(color=variable))
+
 
 
 
