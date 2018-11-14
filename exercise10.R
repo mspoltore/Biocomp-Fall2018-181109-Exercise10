@@ -3,6 +3,8 @@
 rm(list=ls())
 setwd("~/Desktop/biocomp2018/exercise10/Biocomp-Fall2018-181109-Exercise10")
 data=read.csv("data.txt")
+library(reshape2)
+library(ggplot2)
 
 # Function for the quadratic model
 quadratic = function(p,x,y){
@@ -37,5 +39,45 @@ lFit=optim(par=lInitial,fn=linear, x=data$x, y=data$y)
 print(lFit)
 
 # Evaluation
-2*(107.7382-128.1356)
+testStat=2*(lFit$value-qFit$value) 
+1-pchisq(q=testStat,df=1)
+
+# Part 2
+
+speciesModel = function(t, y, p){
+  # arguments = time, state variable y, parameters p
+  N1=y[1]
+  N2=y[2]
+  
+  R1=p[1]
+  a11=p[2]
+  a12=p[3]
+  R2=p[4]
+  a22=p[5]
+  a21=p[6]
+  
+  dN1dt = R1*(1-N1*a11-N2*a12)*N1
+  
+  dN2dt = R2*(1-N2*a22-N1*a21)*N2
+  
+  return(list(c(dN1dt,dN2dt)))
+}
+# a12<a11
+# a21<a22
+
+# Case 1
+y0=c(0.1,0.1)
+Times=1:100
+params1=c(0.5,1,0.5,0.5,2,0.5)
+#params=(R1,a11,a12,R2,a22,a21)
+sim1=ode(y=y0,times=Times,func=speciesModel,parms=params1)
+out1=data.frame(time=sim1[,1],pop1=sim1[,2],pop2=sim1[,3])
+out1=melt(out1,id.vars = "time")
+ggplot(data=out1, aes(x=time,y=value))+geom_line(aes(color=variable))
+
+# Case 2
+
+
+
+
 
